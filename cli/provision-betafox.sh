@@ -20,6 +20,30 @@ else
 	d2gHostname=$2
 fi
 
+# Assumes a pristine phone that trusts marketplace
+if [ ! -d "./backup" ]; then
+  echo "\n*** backing up marketplace certs"
+  mkdir ./backup
+
+  # Be nice and wait for the user to connect the device
+  adb -s $device wait-for-device
+
+  profile=`adb -s $device shell ls data/b2g/mozilla | tr -d '\\r' | grep "\.default$"`
+
+  if [ -z "profile" ]; then
+    echo "No user profile found on device"
+    exit 1
+  fi
+
+  # get prefs from phone
+  adb pull /system/b2g/defaults/pref/user.js "./backup/user.js"
+
+  adb -s $device pull data/b2g/mozilla/$profile/cert9.db "./backup/cert9.db" 
+  adb -s $device pull data/b2g/mozilla/$profile/key4.db "./backup/key4.db" 
+  adb -s $device pull data/b2g/mozilla/$profile/pkcs11.txt "./backup/pkcs11.txt" 
+fi
+
+
 echo "\n*** provision-betafox"
 
 echo "\n*** wiping temporary cert DB"
