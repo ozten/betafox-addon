@@ -28,9 +28,9 @@ fi
 echo "Waiting for device"
 
 # Be nice and wait for the user to connect the device
-adb -s $device wait-for-device
+adb -s "$device" wait-for-device
 
-profile=`adb -s $device shell ls data/b2g/mozilla | tr -d '\\r' | grep "\.default$"`
+profile=`adb -s "$device" shell ls data/b2g/mozilla | tr -d '\\r' | grep "\.default$"`
 
 if [ -z "profile" ]; then
   echo "No user profile found on device"
@@ -39,7 +39,7 @@ fi
 
 echo "Device found"
 
-adb -s $device push "$certdbdir/cert9.db"   data/b2g/mozilla/$profile/cert9.db   
-adb -s $device push "$certdbdir/key4.db"    data/b2g/mozilla/$profile/key4.db    
-adb -s $device push "$certdbdir/pkcs11.txt" data/b2g/mozilla/$profile/pkcs11.txt 
+adb -s "$device" push "$certdbdir/cert9.db"   data/b2g/mozilla/$profile/cert9.db   
+adb -s "$device" push "$certdbdir/key4.db"    data/b2g/mozilla/$profile/key4.db    
+adb -s "$device" push "$certdbdir/pkcs11.txt" data/b2g/mozilla/$profile/pkcs11.txt 
 

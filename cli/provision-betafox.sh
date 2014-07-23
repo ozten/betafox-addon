@@ -26,7 +26,7 @@ if [ ! -d "./backup" ]; then
   mkdir ./backup
 
   # Be nice and wait for the user to connect the device
-  adb -s $device wait-for-device
+  adb -s "$device" wait-for-device
 
   profile=`adb -s $device shell ls data/b2g/mozilla | tr -d '\\r' | grep "\.default$"`
 
@@ -38,9 +38,9 @@ if [ ! -d "./backup" ]; then
   # get prefs from phone
   adb pull /system/b2g/defaults/pref/user.js "./backup/user.js"
 
-  adb -s $device pull data/b2g/mozilla/$profile/cert9.db "./backup/cert9.db" 
-  adb -s $device pull data/b2g/mozilla/$profile/key4.db "./backup/key4.db" 
-  adb -s $device pull data/b2g/mozilla/$profile/pkcs11.txt "./backup/pkcs11.txt" 
+  adb -s "$device" pull data/b2g/mozilla/$profile/cert9.db "./backup/cert9.db" 
+  adb -s "$device" pull data/b2g/mozilla/$profile/key4.db "./backup/key4.db" 
+  adb -s "$device" pull data/b2g/mozilla/$profile/pkcs11.txt "./backup/pkcs11.txt" 
 fi
 
 
@@ -63,7 +63,7 @@ for publicFile in cert9.db key4.db  pkcs11.txt; do
   fi
 done
 
-if [ $device == 'unknown' ]; then
+if [ "$device" == 'unknown' ]; then
 	echo "Firefox OS device not found."
 	echo "Please connect your device via ADB, turn it on, unlock it, enable remote debugging, and try again"
 
@@ -73,8 +73,8 @@ else
 fi
 
 echo "\n*** push temporary cert DB to device $device"       
-./push_certdb.sh $device certdb.tmp
+./push_certdb.sh "$device" certdb.tmp
 
 echo "\n*** reset trusted marketplace list on device $device to $d2gHostname"
-./change_trusted_servers.sh $device "$d2gHostname"
+./change_trusted_servers.sh "$device" "$d2gHostname"
 

@@ -22,7 +22,7 @@ if [ -z "$device" -o -z "$servers" ]; then
 fi
 
 # Be nice and wait for the user to connect the device
-adb -s $device wait-for-device
+adb -s "$device" wait-for-device
 
 # get prefs from phone
 adb pull /system/b2g/defaults/pref/user.js user-old.js 
